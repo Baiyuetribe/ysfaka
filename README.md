@@ -1,35 +1,68 @@
+## 云尚发卡
 
+专门为个人或小型企业提供在线售卡，订单处理系统。
 
+## RUN
 
-### 什么是云尚发卡系统？
-专门为个人或小型企业提供在线售卡，订单处理系统
+```
+wget https://raw.githubusercontent.com/Baiyuetribe/ysfaka/master/docker-compose.yml
+docker-compose up -d
+```
 
-### 程序使用要求？
-* php >= 5.6
-* mysql >= 5.2
-* win or linux
+运行结束后，访问域名或者ip即可进入。默认root密码`Passw0rd` .
+
+![Snipas9](https://ws3.sinaimg.cn/large/007rd8E4ly1g1uiag7w1pj30mo0fj403.jpg)
+
+## 运行示例：
+
+```yaml
+version: '2'
+services:
+    nginx:
+        image: "baiyuetribe/ysfaka:nginx"
+        ports:
+            - "80:80"
+        networks:
+            - frontend
+        depends_on:
+            - php
+    php:
+        image: "baiyuetribe/ysfaka:php"
+        networks:
+            - frontend
+            - backend
+        depends_on:
+            - mysql
+    mysql:
+        image: mysql:5.7
+        volumes:
+            - mysql-data:/var/lib/mysql
+        environment:
+            TZ: 'Asia/Shanghai'
+            MYSQL_ROOT_PASSWORD: Passw0rd
+        command: ['mysqld', '--character-set-server=utf8']
+        networks:
+            - backend
+volumes:
+    mysql-data:
+
+networks:
+    frontend:
+    backend:
+```
+
+[![Try in PWD](https://github.com/play-with-docker/stacks/raw/cff22438cb4195ace27f9b15784bbb497047afa7/assets/images/button.png)](https://labs.play-with-docker.com/?stack=https://raw.githubusercontent.com/Baiyuetribe/ysfaka/master/docker-compose.yml)
+
+运行结束后，访问域名或者ip即可进入。默认root密码`Passw0rd` .
+
+## 其他说明
+
+#### 停止运行
+
+```
+docker-composer down
+```
+
 
 ### demo地址：[http://fk.phpke.cn](http://fk.phpke.cn)
-
-
-
-### 捐助
-**感谢以下人员对开源事业的支持** 
-
-
-
-名字 | 金额 | 留言 | 时间
----|---|---|---
-爱你的责任 | 111 | 有空更新下页面 | 2018-05-01
-冷若寒冰 | 200 | 钱不多，只是想支持 | 2018-05-01
-无名 | 66.6 | 什么也没有说 | 2018-04-20
-寒冷的北极 | 88.0 | 什么也没有说 | 2018-04-20
-月色 | 16.66 | 正在正使用 | 2018-04-20
-趴趴趴 | 6.66 | 什么也没有说 | 2018-04-18
-
-
-### 严正声明
-本项目仅做技术交流使用，任何人或组织无论以何种形式将其用在其他任何地方由此引发的各种问题均与本人无关
-
-
-
+原作地址：https://github.com/assimon/ysfaka
